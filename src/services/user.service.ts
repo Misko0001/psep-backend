@@ -8,7 +8,7 @@ export class UserService {
     static async getAllUsers() {
         const data = await repo.find({
             where: {
-                userActive: 1
+                userActive: true
             }
         });
 
