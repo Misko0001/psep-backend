@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { Order } from "./Order";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Index("uq_user_user_name", ["userName"], { unique: true })
 @Entity("user", { schema: "psep-db" })
@@ -27,7 +20,4 @@ export class User {
 
   @Column("bool", { name: "user_active", default: () => "'true'" })
   userActive: boolean;
-
-  @OneToMany(() => Order, (order) => order.orderUser)
-  orders: Order[];
 }

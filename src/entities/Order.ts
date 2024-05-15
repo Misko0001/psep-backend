@@ -8,18 +8,18 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { FoodOrder } from "./FoodOrder";
+import { Customer } from "./Customer";
 import { State } from "./State";
-import { User } from "./User";
 
-@Index("fk_order_user", ["orderUserId"], {})
 @Index("fk_order_state", ["orderStateId"], {})
+@Index("fk_order_customer", ["orderCustomerId"], {})
 @Entity("order", { schema: "psep-db" })
 export class Order {
   @PrimaryGeneratedColumn({ type: "int", name: "order_id", unsigned: true })
   orderId: number;
 
-  @Column("int", { name: "order_user_id", unsigned: true })
-  orderUserId: number;
+  @Column("int", { name: "order_customer_id", unsigned: true })
+  orderCustomerId: number;
 
   @Column("int", {
     name: "order_state_id",
@@ -43,17 +43,19 @@ export class Order {
   @OneToMany(() => FoodOrder, (foodOrder) => foodOrder.foodOrderOrder)
   foodOrders: FoodOrder[];
 
+  @ManyToOne(() => Customer, (customer) => customer.orders, {
+    onDelete: "NO ACTION",
+    onUpdate: "NO ACTION",
+  })
+  @JoinColumn([
+    { name: "order_customer_id", referencedColumnName: "customerId" },
+  ])
+  orderCustomer: Customer;
+
   @ManyToOne(() => State, (state) => state.orders, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
   @JoinColumn([{ name: "order_state_id", referencedColumnName: "stateId" }])
   orderState: State;
-
-  @ManyToOne(() => User, (user) => user.orders, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  @JoinColumn([{ name: "order_user_id", referencedColumnName: "userId" }])
-  orderUser: User;
 }

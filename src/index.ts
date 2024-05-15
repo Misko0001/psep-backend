@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { configDotenv } from 'dotenv';
 import { AppDataSource } from './db';
+import { FoodService } from './services/food.service';
 
 const app = express();
 app.use(express.json());
@@ -19,10 +20,8 @@ AppDataSource.initialize().then(() => {
 }).catch((e) => console.log(e));
 
 
-app.get('/', (req, res) => {
-    res.json({
-        message: "Hello World From ExpressJS and TypeScript!"
-    });
+app.get('/', async (req, res) => {
+    res.json(await FoodService.getAllFoods());
 });
 
 app.get("*", (req, res) => {

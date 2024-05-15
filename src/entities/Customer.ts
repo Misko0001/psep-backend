@@ -1,4 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Order } from "./Order";
 
 @Index("uq_customer_customer_email", ["customerEmail"], { unique: true })
 @Entity("customer", { schema: "psep-db" })
@@ -29,4 +36,7 @@ export class Customer {
 
   @Column("datetime", { name: "customer_deleted_at", nullable: true })
   customerDeletedAt: Date | null;
+
+  @OneToMany(() => Order, (order) => order.orderCustomer)
+  orders: Order[];
 }
