@@ -1,6 +1,7 @@
 import { configDotenv } from "dotenv";
 import { DataSource } from "typeorm";
 import { Category } from "./entities/Category";
+import { Customer } from "./entities/Customer";
 import { Food } from "./entities/Food";
 import { FoodOrder } from "./entities/FoodOrder";
 import { Order } from "./entities/Order";
@@ -16,6 +17,6 @@ export const AppDataSource = new DataSource({
     username: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
-    entities: [Category, Food, FoodOrder, Order, Restaurant, State, User],
+    entities: [Category, Customer, Food, FoodOrder, Order, Restaurant, State, User],
     logging: false
 });
