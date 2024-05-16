@@ -37,6 +37,28 @@ app.use('/api/user', UserRoute);
 
 app.get("*", (req, res) => {
     res.status(404).json({
-        message: "Not found!"
+        message: "NOT_FOUND",
+        timestamp: new Date()
+    });
+});
+
+app.post("*", (req, res) => {
+    res.status(501).json({
+        message: "NOT_IMPLEMENTED",
+        timestamp: new Date()
+    });
+});
+
+app.put("*", (req, res) => {
+    res.status(501).json({
+        message: "NOT_IMPLEMENTED",
+        timestamp: new Date()
+    });
+});
+
+app.delete("*", (req, res) => {
+    res.status(501).json({
+        message: "NOT_IMPLEMENTED",
+        timestamp: new Date()
     });
 });
