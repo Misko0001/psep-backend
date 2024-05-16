@@ -2,6 +2,7 @@ import { IsNull } from "typeorm";
 import { AppDataSource } from "../db";
 import { Category } from "../entities/Category";
 import { NameModel } from "../models/name.model";
+import { checkIfDefined } from "../utils";
 
 const repo = AppDataSource.getRepository(Category);
 
@@ -34,12 +35,7 @@ export class CategoryService {
                 categoryDeletedAt: IsNull()
             }
         });
-
-        if (data == undefined) {
-            throw new Error("NOT_FOUND");
-        }
-
-        return data;
+        return checkIfDefined(data);
     }
 
     static async createCategory(model: NameModel) {

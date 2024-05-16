@@ -19,3 +19,10 @@ export async function handleRequest(res: Response, callback: Promise<any>) {
         });
     }
 }
+
+export function checkIfDefined(data: any) {
+    if (data == undefined) {
+        throw new Error("NOT_FOUND");
+    }
+    return data;
+}

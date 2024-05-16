@@ -2,6 +2,7 @@ import { IsNull } from "typeorm";
 import { AppDataSource } from "../db";
 import { State } from "../entities/State";
 import { NameModel } from "../models/name.model";
+import { checkIfDefined } from "../utils";
 
 const repo = AppDataSource.getRepository(State);
 
@@ -34,10 +35,7 @@ export class StateService {
                 stateDeletedAt: IsNull()
             }
         });
-        if (data == undefined) {
-            throw new Error("NOT_FOUND");
-        }
-        return data;
+        return checkIfDefined(data);
     }
 
     static async createState(model: NameModel) {

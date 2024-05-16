@@ -2,6 +2,7 @@ import { IsNull } from "typeorm";
 import { AppDataSource } from "../db";
 import { Restaurant } from "../entities/Restaurant";
 import { NameModel } from "../models/name.model";
+import { checkIfDefined } from "../utils";
 
 const repo = AppDataSource.getRepository(Restaurant);
 
@@ -34,10 +35,7 @@ export class RestaurantService {
                 restaurantDeletedAt: IsNull()
             }
         });
-        if (data == undefined) {
-            throw new Error("NOT_FOUND");
-        }
-        return data;
+        return checkIfDefined(data);
     }
 
     static async createRestaurant(model: NameModel) {

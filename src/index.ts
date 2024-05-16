@@ -10,7 +10,6 @@ import { FoodRoute } from './routes/food.route';
 import { OrderRoute } from './routes/order.route';
 import { RestaurantRoute } from './routes/restaurant.route';
 import { StateRoute } from './routes/state.route';
-import { UserRoute } from './routes/user.route';
 
 const app = express();
 app.use(express.json());
@@ -33,7 +32,6 @@ app.use('/api/food', FoodRoute);
 app.use('/api/order', OrderRoute);
 app.use('/api/restaurant', RestaurantRoute);
 app.use('/api/state', StateRoute);
-app.use('/api/user', UserRoute);
 
 app.get("*", (req, res) => {
     res.status(404).json({
