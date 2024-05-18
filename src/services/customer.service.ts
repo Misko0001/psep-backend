@@ -47,7 +47,6 @@ export class CustomerService {
     static async createCustomer(model: CustomerModel) {
         const data = await repo.save({
             customerName: model.customerName,
-            customerPassword: model.customerPassword,
             customerEmail: model.customerEmail,
             customerPhone: model.customerPhone,
             customerAddress: model.customerAddress,
@@ -60,13 +59,13 @@ export class CustomerService {
     static async updateCustomer(id: number, model: CustomerModel) {
         const data = await this.getCustomerById(id);
         data.customerName = model.customerName;
-        data.customerPassword = model.customerPassword;
         data.customerEmail = model.customerEmail;
         data.customerPhone = model.customerPhone;
         data.customerAddress = model.customerAddress;
         data.customerUpdatedAt = new Date();
-        delete data.customerDeletedAt;
-        return data;
+        const newData = await repo.save(data);
+        delete newData.customerDeletedAt;
+        return newData;
     }
 
     static async deleteCustomer(id: number) {

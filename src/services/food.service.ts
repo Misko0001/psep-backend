@@ -45,40 +45,6 @@ export class FoodService {
             select: {
                 foodId: true,
                 foodName: true,
-                foodCreatedAt: true,
-                foodUpdatedAt: true,
-                foodCategory: {
-                    categoryId: true,
-                    categoryName: true,
-                },
-                foodRestaurant: {
-                    restaurantId: true,
-                    restaurantName: true
-                }
-            },
-            where: {
-                foodCategory: {
-                    categoryDeletedAt: IsNull()
-                },
-                foodRestaurant: {
-                    restaurantDeletedAt: IsNull()
-                },
-                foodId: id,
-                foodDeletedAt: IsNull()
-            },
-            relations: {
-                foodCategory: true,
-                foodRestaurant: true
-            }
-        });
-        return checkIfDefined(data);
-    }
-
-    static async getFoodWithoutRelationsById(id: number) {
-        const data = await repo.findOne({
-            select: {
-                foodId: true,
-                foodName: true,
                 foodCategoryId: true,
                 foodRestaurantId: true,
                 foodCreatedAt: true,
@@ -110,7 +76,7 @@ export class FoodService {
     }
 
     static async updateFood(id: number, model: FoodModel) {
-        const data = await this.getFoodWithoutRelationsById(id);
+        const data = await this.getFoodById(id);
         data.foodName = model.foodName;
         data.foodUpdatedAt = new Date();
         data.foodCategoryId = model.foodCategoryId;
@@ -121,7 +87,7 @@ export class FoodService {
     }
 
     static async deleteFood(id: number) {
-        const data = await this.getFoodWithoutRelationsById(id);
+        const data = await this.getFoodById(id);
         data.foodDeletedAt = new Date()
         await repo.save(data);
     }

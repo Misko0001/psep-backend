@@ -8,11 +8,6 @@ OrderRoute.get('/', (req, res) => {
     handleRequest(res, OrderService.getAllOrders());
 });
 
-OrderRoute.get('/:id/simple', (req, res) => {
-    const id = req.params.id as any as number;
-    handleRequest(res, OrderService.getOrderWithoutRelationsById(id));
-});
-
 OrderRoute.get('/:id', (req, res) => {
     const id = req.params.id as any as number;
     handleRequest(res, OrderService.getOrderById(id));

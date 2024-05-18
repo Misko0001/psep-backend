@@ -16,9 +16,6 @@ export class Customer {
   @Column("varchar", { name: "customer_name", length: 255 })
   customerName: string;
 
-  @Column("varchar", { name: "customer_password", length: 255 })
-  customerPassword: string;
-
   @Column("varchar", { name: "customer_email", unique: true, length: 255 })
   customerEmail: string;
 

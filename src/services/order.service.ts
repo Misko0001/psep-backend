@@ -46,42 +46,6 @@ export class OrderService {
         const data = await repo.findOne({
             select: {
                 orderId: true,
-                orderCreatedAt: true,
-                orderUpdatedAt: true,
-                orderCustomer: {
-                    customerId: true,
-                    customerName: true,
-                    customerEmail: true,
-                    customerPhone: true,
-                    customerAddress: true
-                },
-                orderState: {
-                    stateId: true,
-                    stateName: true
-                }
-            },
-            where: {
-                orderCustomer: {
-                    customerDeletedAt: IsNull()
-                },
-                orderState: {
-                    stateDeletedAt: IsNull()
-                },
-                orderId: id,
-                orderDeletedAt: IsNull()
-            },
-            relations: {
-                orderCustomer: true,
-                orderState: true
-            }
-        });
-        return checkIfDefined(data);
-    }
-
-    static async getOrderWithoutRelationsById(id: number) {
-        const data = await repo.findOne({
-            select: {
-                orderId: true,
                 orderCustomerId: true,
                 orderStateId: true,
                 orderCreatedAt: true,
@@ -112,7 +76,7 @@ export class OrderService {
     }
 
     static async updateOrder(id: number, model: OrderModel) {
-        const data = await this.getOrderWithoutRelationsById(id);
+        const data = await this.getOrderById(id);
         data.orderCustomerId = model.orderCustomerId;
         data.orderStateId = model.orderStateId;
         data.orderUpdatedAt = new Date();
@@ -122,7 +86,7 @@ export class OrderService {
     }
 
     static async deleteOrder(id: number) {
-        const data = await this.getOrderWithoutRelationsById(id);
+        const data = await this.getOrderById(id);
         data.orderDeletedAt = new Date()
         await repo.save(data);
     }

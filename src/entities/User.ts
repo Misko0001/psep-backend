@@ -18,6 +18,6 @@ export class User {
   })
   userCreatedAt: Date;
 
-  @Column("bool", { name: "user_active", default: () => "'true'" })
-  userActive: boolean;
+  @Column("tinyint", { name: "user_active", default: () => "'1'" })
+  userActive: number;
 }

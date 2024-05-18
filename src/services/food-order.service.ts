@@ -79,75 +79,6 @@ export class FoodOrderService {
         const data = await repo.findOne({
             select: {
                 foodOrderId: true,
-                foodOrderCreatedAt: true,
-                foodOrderUpdatedAt: true,
-                foodOrderFood: {
-                    foodId: true,
-                    foodName: true,
-                    foodCategory: {
-                        categoryId: true,
-                        categoryName: true
-                    },
-                    foodRestaurant: {
-                        restaurantId: true,
-                        restaurantName: true
-                    }
-                },
-                foodOrderOrder: {
-                    orderId: true,
-                    orderCustomer: {
-                        customerId: true,
-                        customerName: true,
-                        customerEmail: true,
-                        customerPhone: true,
-                        customerAddress: true
-                    },
-                    orderState: {
-                        stateId: true,
-                        stateName: true
-                    }
-                }
-            },
-            where: {
-                foodOrderFood: {
-                    foodCategory: {
-                        categoryDeletedAt: IsNull()
-                    },
-                    foodRestaurant: {
-                        restaurantDeletedAt: IsNull()
-                    },
-                    foodDeletedAt: IsNull()
-                },
-                foodOrderOrder: {
-                    orderCustomer: {
-                        customerDeletedAt: IsNull()
-                    },
-                    orderState: {
-                        stateDeletedAt: IsNull()
-                    },
-                    orderDeletedAt: IsNull()
-                },
-                foodOrderId: id,
-                foodOrderDeletedAt: IsNull()
-            },
-            relations: {
-                foodOrderFood: {
-                    foodCategory: true,
-                    foodRestaurant: true
-                },
-                foodOrderOrder: {
-                    orderCustomer: true,
-                    orderState: true
-                }
-            }
-        });
-        return checkIfDefined(data);
-    }
-
-    static async getFoodOrderWithoutRelationsById(id: number) {
-        const data = await repo.findOne({
-            select: {
-                foodOrderId: true,
                 foodOrderFoodId: true,
                 foodOrderOrderId: true,
                 foodOrderCreatedAt: true,
@@ -190,7 +121,7 @@ export class FoodOrderService {
     }
 
     static async updateFoodOrder(id: number, model: FoodOrderModel) {
-        const data = await this.getFoodOrderWithoutRelationsById(id);
+        const data = await this.getFoodOrderById(id);
         data.foodOrderFoodId = model.foodOrderFoodId;
         data.foodOrderOrderId = model.foodOrderOrderId;
         data.foodOrderUpdatedAt = new Date();
@@ -200,7 +131,7 @@ export class FoodOrderService {
     }
 
     static async deleteFoodOrder(id: number) {
-        const data = await this.getFoodOrderWithoutRelationsById(id);
+        const data = await this.getFoodOrderById(id);
         data.foodOrderDeletedAt = new Date();
         await repo.save(data);
     }

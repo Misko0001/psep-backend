@@ -8,11 +8,6 @@ FoodRoute.get('/', (req, res) => {
     handleRequest(res, FoodService.getAllFoods());
 });
 
-FoodRoute.get('/:id/simple', (req, res) => {
-    const id = req.params.id as any as number;
-    handleRequest(res, FoodService.getFoodWithoutRelationsById(id));
-});
-
 FoodRoute.get('/:id', (req, res) => {
     const id = req.params.id as any as number;
     handleRequest(res, FoodService.getFoodById(id));
