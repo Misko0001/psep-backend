@@ -8,7 +8,7 @@ const repo = AppDataSource.getRepository(Category);
 
 export class CategoryService {
 
-    static async getAllCategorys() {
+    static async getAllCategories() {
         return await repo.find({
             select: {
                 categoryId: true,

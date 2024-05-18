@@ -5,7 +5,7 @@ import { CategoryService } from "../services/category.service";
 export const CategoryRoute = Router();
 
 CategoryRoute.get('/', (req, res) => {
-    handleRequest(res, CategoryService.getAllCategorys());
+    handleRequest(res, CategoryService.getAllCategories());
 });
 
 CategoryRoute.get('/:id', (req, res) => {

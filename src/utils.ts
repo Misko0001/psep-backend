@@ -7,7 +7,7 @@ export async function handleRequest(res: Response, callback: Promise<any>) {
             res.status(204).send();
             return;
         }
-        res.json();
+        res.json(data);
     } catch (e) {
         let code = 500;
         if (e.message == "NOT_FOUND") {
