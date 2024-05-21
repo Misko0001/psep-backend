@@ -10,6 +10,8 @@ import { FoodRoute } from './routes/food.route';
 import { OrderRoute } from './routes/order.route';
 import { RestaurantRoute } from './routes/restaurant.route';
 import { StateRoute } from './routes/state.route';
+import { UserRoute } from './routes/user.route';
+import { authenticateToken } from './utils';
 
 const app = express();
 app.use(express.json());
@@ -25,6 +27,8 @@ AppDataSource.initialize().then(() => {
     });
 }).catch((e) => console.log(e));
 
+app.use(authenticateToken);
+app.use('/api/user', UserRoute);
 app.use('/api/category', CategoryRoute);
 app.use('/api/customer', CustomerRoute);
 app.use('/api/food-order', FoodOrderRoute);
