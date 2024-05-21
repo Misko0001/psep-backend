@@ -38,6 +38,9 @@ export class OrderService {
             relations: {
                 orderCustomer: true,
                 orderState: true
+            },
+            order: {
+                orderCreatedAt: 'DESC'
             }
         });
     }
