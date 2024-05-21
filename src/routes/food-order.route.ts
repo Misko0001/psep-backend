@@ -13,6 +13,11 @@ FoodOrderRoute.get('/:id', (req, res) => {
     handleRequest(res, FoodOrderService.getFoodOrderById(id));
 });
 
+FoodOrderRoute.get('/order/:id', (req, res) => {
+    const id = req.params.id as any as number;
+    handleRequest(res, FoodOrderService.getFoodOrdersByOrder(id));
+});
+
 FoodOrderRoute.post('/', (req, res) => {
     handleRequest(res, FoodOrderService.createFoodOrder(req.body));
 });

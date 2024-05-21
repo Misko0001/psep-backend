@@ -12,6 +12,7 @@ export class FoodOrderService {
         return await repo.find({
             select: {
                 foodOrderId: true,
+                foodOrderAmount: true,
                 foodOrderCreatedAt: true,
                 foodOrderUpdatedAt: true,
                 foodOrderFood: {
@@ -75,12 +76,82 @@ export class FoodOrderService {
         });
     }
 
+    static async getFoodOrdersByOrder(id: number) {
+        return await repo.find({
+            select: {
+                foodOrderId: true,
+                foodOrderAmount: true,
+                foodOrderCreatedAt: true,
+                foodOrderUpdatedAt: true,
+                foodOrderFood: {
+                    foodId: true,
+                    foodName: true,
+                    foodCategory: {
+                        categoryId: true,
+                        categoryName: true
+                    },
+                    foodRestaurant: {
+                        restaurantId: true,
+                        restaurantName: true
+                    }
+                },
+                foodOrderOrder: {
+                    orderId: true,
+                    orderCustomer: {
+                        customerId: true,
+                        customerName: true,
+                        customerEmail: true,
+                        customerPhone: true,
+                        customerAddress: true
+                    },
+                    orderState: {
+                        stateId: true,
+                        stateName: true
+                    }
+                }
+            },
+            where: {
+                foodOrderFood: {
+                    foodCategory: {
+                        categoryDeletedAt: IsNull()
+                    },
+                    foodRestaurant: {
+                        restaurantDeletedAt: IsNull()
+                    },
+                    foodDeletedAt: IsNull()
+                },
+                foodOrderOrder: {
+                    orderId: id,
+                    orderCustomer: {
+                        customerDeletedAt: IsNull()
+                    },
+                    orderState: {
+                        stateDeletedAt: IsNull()
+                    },
+                    orderDeletedAt: IsNull()
+                },
+                foodOrderDeletedAt: IsNull()
+            },
+            relations: {
+                foodOrderFood: {
+                    foodCategory: true,
+                    foodRestaurant: true
+                },
+                foodOrderOrder: {
+                    orderCustomer: true,
+                    orderState: true
+                }
+            }
+        });
+    }
+
     static async getFoodOrderById(id: number) {
         const data = await repo.findOne({
             select: {
                 foodOrderId: true,
                 foodOrderFoodId: true,
                 foodOrderOrderId: true,
+                foodOrderAmount: true,
                 foodOrderCreatedAt: true,
                 foodOrderUpdatedAt: true,
             },
@@ -114,6 +185,7 @@ export class FoodOrderService {
         const data = await repo.save({
             foodOrderFoodId: model.foodOrderFoodId,
             foodOrderOrderId: model.foodOrderOrderId,
+            foodOrderAmount: model.foodOrderAmount,
             foodOrderCreatedAt: new Date()
         });
         delete data.foodOrderDeletedAt;
@@ -124,6 +196,7 @@ export class FoodOrderService {
         const data = await this.getFoodOrderById(id);
         data.foodOrderFoodId = model.foodOrderFoodId;
         data.foodOrderOrderId = model.foodOrderOrderId;
+        data.foodOrderAmount = model.foodOrderAmount;
         data.foodOrderUpdatedAt = new Date();
         const newData = await repo.save(data);
         delete newData.foodOrderDeletedAt;

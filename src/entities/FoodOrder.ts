@@ -26,6 +26,9 @@ export class FoodOrder {
   @Column("int", { name: "food_order_order_id", unsigned: true })
   foodOrderOrderId: number;
 
+  @Column("int", { name: "food_order_amount", unsigned: true })
+  foodOrderAmount: number;
+
   @Column("datetime", {
     name: "food_order_created_at",
     default: () => "CURRENT_TIMESTAMP",
