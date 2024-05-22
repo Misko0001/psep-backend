@@ -20,8 +20,9 @@ export class UserService {
         const user: User = await this.getUserByUsername(model.username);
         if (await bcrypt.compare(model.password, user.userPassword)) {
             return {
-                access: jwt.sign({ name: model.username }, accessSecret, { expiresIn: accessExpire }),
-                refresh: jwt.sign({ name: model.username }, refreshSecret, { expiresIn: refreshExpire })
+                username: user.userName,
+                access: jwt.sign({ name: user.userName }, accessSecret, { expiresIn: accessExpire }),
+                refresh: jwt.sign({ name: user.userName }, refreshSecret, { expiresIn: refreshExpire })
             }       
         }
         throw new Error("BAD_CREDENTIALS");
@@ -31,6 +32,7 @@ export class UserService {
         try {
             const decoded: any = jwt.verify(refresh, refreshSecret as string);
             return {
+                username: decoded.name,
                 access: jwt.sign({ name: decoded.name }, accessSecret, { expiresIn: accessExpire }),
                 refresh: refresh
             }
@@ -40,7 +42,7 @@ export class UserService {
     }
 
     static async getUserByUsername(username: string) {
-        const data = await repo.find({
+        const data = await repo.findOne({
             where: {
                 userActive: true,
                 userName: username
